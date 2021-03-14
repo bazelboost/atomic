@@ -2,6 +2,7 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 _public_hdrs = [
     "include/boost/*.hpp",
+    "include/boost/atomic/*.hpp",
 ]
 
 cc_library(
