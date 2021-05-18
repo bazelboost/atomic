@@ -2,7 +2,14 @@ load("@rules_cc//cc:defs.bzl", "cc_library")
 
 cc_library(
     name = "atomic",
-    visibility = ["//visibility:public"],
     includes = ["include"],
     hdrs = glob(["include/boost/**/*.hpp"]),
+    srcs = glob(["src/*"]),
+    deps = [
+        "@boost//libs/predef",
+        "@boost//libs/winapi",
+        "@boost//libs/assert",
+        "@boost//libs/static_assert",
+        "@boost//libs/preprocessor",
+    ],
 )
