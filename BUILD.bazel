@@ -1,17 +1,28 @@
 load("@rules_cc//cc:defs.bzl", "cc_library")
 
+_win32_srcs = [
+    "src/wait_ops_windows.cpp",
+]
+
 cc_library(
     name = "atomic",
     visibility = ["//visibility:public"],
-    includes = ["include"],
-    hdrs = glob(["include/boost/**/*.hpp"]),
-    srcs = glob(["src/*"]),
+    includes = ["include", "src"],
+    hdrs = glob(["include/boost/**/*.hpp", "src/*.ipp"]),
+    srcs = glob(["src/*"], exclude = _win32_srcs) + select({
+        "@bazel_tools//tools/cpp:msvc": _win32_srcs,
+        "@bazel_tools//tools/cpp:clang-cl": _win32_srcs,
+        "//conditions:default": [],
+    }),
     deps = [
         "@boost//libs/predef",
-        "@boost//libs/winapi",
         "@boost//libs/assert",
         "@boost//libs/static_assert",
         "@boost//libs/preprocessor",
         "@boost//libs/type_traits",
-    ],
+    ] + select({
+        "@bazel_tools//tools/cpp:msvc": ["@boost//libs/winapi"],
+        "@bazel_tools//tools/cpp:clang-cl": ["@boost//libs/winapi"],
+        "//conditions:default": [],
+    }),
 )
