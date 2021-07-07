@@ -12,5 +12,6 @@ cc_library(
         "@boost//libs/assert",
         "@boost//libs/static_assert",
         "@boost//libs/preprocessor",
+        "@boost//libs/type_traits",
     ],
 )
